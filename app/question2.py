@@ -2,7 +2,6 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 
-import numpy as np
 from py._xmlgen import raw
 
 
@@ -13,9 +12,8 @@ def plot_dr_ratio(portfolio_index, dr):
 	"""
 
     # do your magic here
-    portfolio_index.plot()
-    plt.show()
-    dr.plot()
+    df = pd.concat([portfolio_index, dr], axis=1)
+    df.plot(subplots=True)
     plt.show()
 
 
@@ -38,8 +36,7 @@ def rolling_dr_ratio(df, rolling_window_size=200):
     
     
     sum(Weight * std(TR_Change) )/std(Portfolio_Index)
-    
-    I will use numpy for this because it will be a disservice to that library if not used in this case.
+
     
     """
 
