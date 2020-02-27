@@ -60,18 +60,23 @@ def rolling_dr_ratio(df, rolling_window_size=200):
     # print(dr.())
     # # plot index and the rolling dr
 
-    t = df["TR_Change"].rolling(rolling_window_size).apply(lambda x: np.std(x, axis=0))
-    w = df["Weight"]
-    p = df["Portfolio_Index"].rolling(rolling_window_size).std()
+    t = df["TR_Change"].rolling(rolling_window_size).std().iloc[rolling_window_size:]
+    w = df["Weight"].iloc[rolling_window_size:]
+    p = df["Portfolio_Index"]["1"].rolling(rolling_window_size).std().iloc[rolling_window_size:]
 
     """
     Math is correct, but fails to plot (runtime issue)
     """
-    dr = (w*t).sum(axis=1) / p
+
+    # dr = w.dot(t) / p
+
+    dr = w.mul(t, axis=1).sum(axis=1).div(p)
+
+    print(w)
+    print(t)
+    print(p)
 
 
-    print(p.describe())
-    print((w*t).sum(axis=1).describe())
 
     plot_dr_ratio(df["Portfolio_Index"], dr)
 
